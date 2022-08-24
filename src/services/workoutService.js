@@ -1,52 +1,72 @@
-const { v4: uuid } = require("uuid");
-const Workout = require("../database/Workout");
+const workoutModel = require("../models/workoutModel");
 
-const getAllWorkouts = () => {
+const getAllWorkouts = async (filterParams) => {
   try {
-    const allWorkouts = Workout.getAllWorkouts();
+    const allWorkouts = await workoutModel.find({
+      name: { $regex: filterParams.name },
+    });
     return allWorkouts;
   } catch (error) {
     throw error;
   }
 };
 
-const getOneWorkout = (workoutId) => {
+const getOneWorkout = async (workoutId) => {
   try {
-    const workout = Workout.getOneWorkout(workoutId);
+    const workout = await workoutModel.findById(workoutId);
     return workout;
   } catch (error) {
     throw error;
   }
 };
 
-const createNewWorkout = (newWorkout) => {
+const createNewWorkout = async (newWorkout) => {
   const workoutToInsert = {
     ...newWorkout,
-    id: uuid(),
     createdAt: new Date().toLocaleString("id-ID", { timeZone: "UTC" }),
     updatedAt: new Date().toLocaleString("id-ID", { timeZone: "UTC" }),
   };
 
   try {
-    const createdWorkout = Workout.createNewWorkout(workoutToInsert);
+    const workout = new workoutModel(workoutToInsert);
+    const createdWorkout = await workout.save();
     return createdWorkout;
   } catch (error) {
     throw error;
   }
 };
 
-const updateOneWorkout = (workoutId, changes) => {
+const updateOneWorkout = async (workoutId, changes) => {
   try {
-    const updatedWorkout = Workout.updateOneWorkout(workoutId, changes);
+    const updatedWorkout = await workoutModel.findByIdAndUpdate(
+      workoutId,
+      changes,
+      { useFindAndModify: false }
+    );
+
+    if (!updatedWorkout) {
+      throw {
+        status: 400,
+        message: `Can't find workout with the id '${workoutId}'`,
+      };
+    }
+
     return updatedWorkout;
   } catch (error) {
     throw error;
   }
 };
 
-const deleteOneWorkout = (workoutId) => {
+const deleteOneWorkout = async (workoutId) => {
   try {
-    Workout.deleteOneWorkout(workoutId);
+    const deletedWorkout = await workoutModel.findByIdAndRemove(workoutId);
+
+    if (!deletedWorkout) {
+      throw {
+        status: 400,
+        message: `Can't find workout with the id '${workoutId}'`,
+      };
+    }
   } catch (error) {
     throw error;
   }

@@ -1,33 +1,35 @@
 const workoutService = require("../services/workoutService");
+const Response = require("../utils/response");
 
-const getAllWorkouts = (req, res) => {
+const getAllWorkouts = async (req, res) => {
   try {
-    const allWorkouts = workoutService.getAllWorkouts();
-    res.send({
+    const { name } = req.query;
+    const allWorkouts = await workoutService.getAllWorkouts({ name });
+    res.status(Response.HTTP_OK).send({
       status: "OK",
       data: allWorkouts,
     });
   } catch (error) {
     res
-      .status(error?.status || 500)
+      .status(error?.status || Response.HTTP_INTERNAL_SERVER_ERROR)
       .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
-const getOneWorkout = (req, res) => {
+const getOneWorkout = async (req, res) => {
   const {
     params: { workoutId },
   } = req;
 
   if (!workoutId) {
-    res.status(400).send({
+    res.status(Response.HTTP_BAD_REQUEST).send({
       status: "FAILED",
       data: { error: "Parameter ':workoutId' can not be empty" },
     });
   }
 
   try {
-    const workout = workoutService.getOneWorkout(workoutId);
+    const workout = await workoutService.getOneWorkout(workoutId);
     res.send({
       status: "OK",
       data: workout,
@@ -39,7 +41,7 @@ const getOneWorkout = (req, res) => {
   }
 };
 
-const createNewWorkout = (req, res) => {
+const createNewWorkout = async (req, res) => {
   const { body } = req;
 
   // To improve the request validation you normally would use a third party package like express-validator.
@@ -50,7 +52,7 @@ const createNewWorkout = (req, res) => {
     !body.exercises ||
     !body.trainerTips
   ) {
-    res.status(400).send({
+    res.status(Response.HTTP_BAD_REQUEST).send({
       status: "FAILED",
       data: {
         error:
@@ -68,8 +70,8 @@ const createNewWorkout = (req, res) => {
   };
 
   try {
-    const createdWorkout = workoutService.createNewWorkout(newWorkout);
-    res.status(201).send({
+    const createdWorkout = await workoutService.createNewWorkout(newWorkout);
+    res.status(200).send({
       status: "OK",
       data: createdWorkout,
     });
@@ -80,48 +82,57 @@ const createNewWorkout = (req, res) => {
   }
 };
 
-const updateOneWorkout = (req, res) => {
+const updateOneWorkout = async (req, res) => {
   const {
     body,
     params: { workoutId },
   } = req;
 
-  console.log(req);
   if (!workoutId) {
-    res.status(400).send({
+    res.status(Response.HTTP_BAD_REQUEST).send({
       status: "FAILED",
       data: { error: "Parameter ':workoutId' can not be empty" },
     });
   }
 
   try {
-    const updatedWorkout = workoutService.updateOneWorkout(workoutId, body);
-    res.send({ status: "OK", data: updatedWorkout });
+    const updatedWorkout = await workoutService.updateOneWorkout(
+      workoutId,
+      body
+    );
+
+    res.send({
+      status: "OK",
+      data: updatedWorkout,
+    });
   } catch (error) {
     res
-      .status(error?.status || 500)
+      .status(error?.status || Response.HTTP_INTERNAL_SERVER_ERROR)
       .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
-const deleteOneWorkout = (req, res) => {
+const deleteOneWorkout = async (req, res) => {
   const {
     params: { workoutId },
   } = req;
 
   if (!workoutId) {
-    res.status(400).send({
+    res.status(Response.HTTP_BAD_REQUEST).send({
       status: "FAILED",
       data: { error: "Parameter ':workoutId' can not be empty" },
     });
   }
 
   try {
-    workoutService.deleteOneWorkout(workoutId);
-    res.send({ status: "OK" });
+    await workoutService.deleteOneWorkout(workoutId);
+
+    res.send({
+      status: "OK",
+    });
   } catch (error) {
     res
-      .status(error?.status || 500)
+      .status(error?.status || Response.HTTP_INTERNAL_SERVER_ERROR)
       .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
