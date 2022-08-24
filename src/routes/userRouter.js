@@ -9,8 +9,7 @@ const userController = new UserController();
 
 router.get("/profile", [verifyToken], async (req, res) => {
   try {
-    const userId = req.userId;
-    const result = await userController.getUserProfile(userId);
+    const result = await userController.getUserProfile(req);
     res.status(response.HTTP_OK).send(result);
   } catch (error) {
     res.status(error?.status || 500).send({
