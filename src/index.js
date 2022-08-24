@@ -3,17 +3,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const dbConfig = require("./database/config");
-require("dotenv").config();
+const config = require("./config/default");
 
 const v1WorkoutRouter = require("./v1/routes/workoutRoutes");
 
 const app = express();
-const PORT = process.env.APP_PORT || 3000;
+const PORT = config.appPort;
 app.use(bodyParser.json());
 
 // *** MONGO CONNECTION ***
-mongoose.connect(dbConfig.url, {
+mongoose.connect(config.dbConfig, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

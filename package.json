@@ -1,5 +1,5 @@
 {
-  "name": "crossfit-wod-api",
+  "name": "ruby-seller-center",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "dev": "nodemon src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Muhammad Yusuf",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.19"
