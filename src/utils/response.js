@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   HTTP_CONTINUE: 100,
   HTTP_SWITCHING_PROTOCOLS: 101,
   HTTP_PROCESSING: 102, // RFC2518

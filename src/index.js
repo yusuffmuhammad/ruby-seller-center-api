@@ -1,14 +1,16 @@
 // source : https://www.freecodecamp.org/news/rest-api-design-best-practices-build-a-rest-api/
 
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const config = require("./config/default");
+import express from "express";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import config from "./config/default.js";
 
-const v1WorkoutRouter = require("./v1/routes/workoutRoutes");
+import authRouter from "./routes/authRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 const app = express();
 const PORT = config.appPort;
+
 app.use(bodyParser.json());
 
 // *** MONGO CONNECTION ***
@@ -23,7 +25,8 @@ db.once("open", function () {
 });
 
 // *** ROUTES ***
-app.use("/api/v1/workouts", v1WorkoutRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
 
 app.listen(PORT, () => {
   console.log(`API is listening on port ${PORT}`);
