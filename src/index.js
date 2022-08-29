@@ -7,6 +7,7 @@ import config from "./config/default.js";
 
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
+import storeRouter from "./routes/storeRouter.js";
 
 const app = express();
 const PORT = config.appPort;
@@ -27,6 +28,7 @@ db.once("open", function () {
 // *** ROUTES ***
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/stores", storeRouter);
 
 app.listen(PORT, () => {
   console.log(`API is listening on port ${PORT}`);

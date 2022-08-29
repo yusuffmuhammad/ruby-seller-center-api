@@ -10,6 +10,7 @@ router.post("/register", async (req, res) => {
     const result = await authController.postRegister(req);
     return res.status(response.HTTP_OK).send(result);
   } catch (error) {
+    console.log(error);
     res.status(error?.status || 500).send({
       status: false,
       data: { error: error?.message || error },

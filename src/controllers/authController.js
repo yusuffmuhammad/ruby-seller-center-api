@@ -1,9 +1,26 @@
 import { AuthService } from "../services/authService.js";
+import { validator } from "../helpers/validate.js";
 
 const authService = new AuthService();
 
 class AuthController {
   async postRegister(req) {
+    const validationRule = {
+      phoneNumber: "required",
+      email: "required|email",
+      username: "required",
+      password: "required",
+    };
+
+    await validator(req.body, validationRule, {}, (err, status) => {
+      if (!status) {
+        throw {
+          status: 400,
+          message: err,
+        };
+      }
+    });
+
     try {
       const { body } = req;
 
