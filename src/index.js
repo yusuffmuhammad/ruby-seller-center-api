@@ -19,7 +19,11 @@ app.use(bodyParser.json());
 mongoose.connect(config.dbConfig, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  user: config.dbUserName,
+  pass: config.dbPassword,
+  dbName: config.dbDatabase,
 });
+console.log(config.dbConfig);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
