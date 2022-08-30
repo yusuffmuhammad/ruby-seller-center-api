@@ -47,6 +47,24 @@ class RegionController {
       throw error;
     }
   }
+
+  async getAllVillageByDistrictId(req) {
+    try {
+      const {
+        params: { districtId },
+      } = req;
+      const allVillage = await regionService.getAllVillageByDistrictId(
+        districtId
+      );
+      return {
+        success: true,
+        message: "Successfully get data",
+        data: allVillage,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export { RegionController };

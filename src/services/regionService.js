@@ -27,5 +27,14 @@ class RegionService {
       throw error;
     }
   }
+
+  async getAllVillageByDistrictId(districtId) {
+    try {
+      const allCity = await indonesia.getVillagesOfDistrictId(districtId);
+      return allCity;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 export { RegionService };
