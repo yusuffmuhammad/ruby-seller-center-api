@@ -4,12 +4,11 @@ const storeService = new StoreService();
 
 class StoreController {
   async postStore(req) {
+    const userId = req.userId;
     try {
       const { body } = req;
-      console.log(body);
-      return;
-      const newStore = {};
-      const createdStore = await storeService.postStore(newStore);
+      body.userId = userId;
+      const createdStore = await storeService.postStore(body);
 
       return {
         success: true,

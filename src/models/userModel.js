@@ -29,16 +29,12 @@ const schema = new mongoose.Schema(
       required: true,
     },
     createdAt: {
-      type: String,
-      default: function getCreatedAt() {
-        return new Date().toLocaleString("id-ID", { timeZone: "UTC" });
-      },
+      type: Date,
+      default: Date.now,
     },
     updatedAt: {
-      type: String,
-      default: function getCreatedAt() {
-        return new Date().toLocaleString("id-ID", { timeZone: "UTC" });
-      },
+      type: Date,
+      default: Date.now,
     },
   },
   {
