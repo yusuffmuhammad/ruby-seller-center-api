@@ -4,24 +4,31 @@ import bcrypt from "bcrypt";
 import response from "../utils/response.js";
 import config from "../config/default.js";
 import jwt from "jsonwebtoken";
+import connection from "../config/connection.js";
 
 const userService = new UserService();
 
 class AuthService {
   async postRegister(newUser) {
+    const session = await connection.startSession();
     try {
+      session.startTransaction();
       const hashedPassword = await bcrypt.hash(newUser.password, 10);
-      const userToInsert = {
-        ...newUser,
-        password: hashedPassword,
-      };
-
-      const user = new userModel(userToInsert);
-      const createdUser = await user.save();
-      return createdUser;
+      const userToInsert = [
+        {
+          ...newUser,
+          password: hashedPassword,
+        },
+      ];
+      const user = await userModel.create(userToInsert, { session });
+      await session.commitTransaction();
+      return user;
     } catch (error) {
+      console.log(error);
+      await session.abortTransaction();
       throw error;
     }
+    session.endSession();
   }
 
   async postLogin(loginParams) {
@@ -30,7 +37,7 @@ class AuthService {
 
       if (!user) {
         throw {
-          status: response.HTTP_BAD_REQUEST,
+          status: response.HTTP_UNPROCESSABLE_ENTITY,
           message: `can't find user with the email ${loginParams.email}`,
         };
       }
@@ -52,7 +59,7 @@ class AuthService {
         };
       } else {
         throw {
-          status: response.HTTP_BAD_REQUEST,
+          status: response.HTTP_UNPROCESSABLE_ENTITY,
           message: `passwords don't match`,
         };
       }

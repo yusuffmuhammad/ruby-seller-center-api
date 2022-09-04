@@ -20,13 +20,6 @@ app.use(morgan("combined", { stream: winston.stream }));
 app.use(bodyParser.json());
 
 // *** MONGO CONNECTION ***
-mongoose.connect(config.dbConfig, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  user: config.dbUserName,
-  pass: config.dbPassword,
-  dbName: config.dbDatabase,
-});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {

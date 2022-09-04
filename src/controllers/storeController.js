@@ -19,6 +19,23 @@ class StoreController {
       throw error;
     }
   }
+
+  async getDetailStore(req) {
+    try {
+      const {
+        params: { storeId },
+      } = req;
+
+      const store = await storeService.findById(storeId);
+      return {
+        success: true,
+        message: "Successfully get data",
+        data: store,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export { StoreController };
