@@ -43,7 +43,7 @@ const schema = new mongoose.Schema(
       default: "inactive",
     },
     image: {
-      type: String,
+      type: Object,
       required: false,
     },
     createdAt: {

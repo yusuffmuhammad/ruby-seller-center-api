@@ -8,6 +8,9 @@ import config from "./config/default.js";
 import morgan from "morgan";
 import winston from "./config/winston.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import storeRouter from "./routes/storeRouter.js";
@@ -18,6 +21,10 @@ const PORT = config.appPort;
 
 app.use(morgan("combined", { stream: winston.stream }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configure for static file
+app.use(express.static(`src/public`));
 
 // *** MONGO CONNECTION ***
 const db = mongoose.connection;

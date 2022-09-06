@@ -3,7 +3,8 @@ import response from "../utils/response.js";
 
 class StoreService {
   async postStore(newStore) {
-    const existStore = this.findByUserId(newStore.userId);
+    const existStore = await this.findByUserId(newStore.userId);
+
     if (existStore) {
       throw {
         status: response.HTTP_UNPROCESSABLE_ENTITY,
@@ -45,6 +46,29 @@ class StoreService {
       }
 
       return store;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findByIdAndUpdate(storeId, changes) {
+    try {
+      const updatedStore = await storeModel.findByIdAndUpdate(
+        storeId,
+        changes,
+        {
+          useFindAndModify: false,
+        }
+      );
+
+      if (!updatedStore) {
+        throw {
+          status: response.HTTP_UNPROCESSABLE_ENTITY,
+          message: "Store not found",
+        };
+      }
+
+      return updatedStore;
     } catch (error) {
       throw error;
     }

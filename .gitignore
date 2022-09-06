@@ -2,3 +2,4 @@
 # dotenv environment variables file
 .env
 /src/logs
+/src/public/images

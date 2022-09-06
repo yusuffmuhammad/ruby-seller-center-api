@@ -1,5 +1,6 @@
 import { AuthService } from "../services/authService.js";
 import { validator } from "../helpers/validate.js";
+import response from "../utils/response.js";
 
 const authService = new AuthService();
 
@@ -15,7 +16,7 @@ class AuthController {
     await validator(req.body, validationRule, {}, (err, status) => {
       if (!status) {
         throw {
-          status: 400,
+          status: response.HTTP_UNPROCESSABLE_ENTITY,
           message: err,
         };
       }

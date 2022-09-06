@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import config from "../config/default.js";
 import response from "../utils/response.js";
 
-export const verifyToken = (req, res, next) => {
+export const verifyTokenMiddleware = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
     return res.status(response.HTTP_FORBIDDEN).send({
