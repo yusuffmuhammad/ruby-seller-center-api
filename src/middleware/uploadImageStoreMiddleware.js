@@ -1,14 +1,16 @@
 import multer from "multer";
+import path from "path";
 
-const path = "src/public/images/stores";
+const filePath = "src/public/images/stores";
 const fileSize = 3000000;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path);
+    cb(null, filePath);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "--" + file.originalname);
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}${ext}`);
   },
 });
 

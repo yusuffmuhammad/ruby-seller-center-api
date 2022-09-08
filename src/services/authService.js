@@ -24,7 +24,6 @@ class AuthService {
       await session.commitTransaction();
       return user;
     } catch (error) {
-      console.log(error);
       await session.abortTransaction();
       throw error;
     }

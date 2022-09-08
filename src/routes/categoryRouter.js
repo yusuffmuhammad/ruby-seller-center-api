@@ -1,16 +1,16 @@
 import express from "express";
+import { CategoryController } from "../controllers/categoryController.js";
 import response from "../utils/response.js";
-import { AuthController } from "../controllers/authController.js";
 import logger from "../config/winston.js";
-import baseURL from "../helpers/baseURL.js";
+import { verifyTokenMiddleware } from "../middleware/authJwtMiddleware.js";
 
 const router = express.Router();
-const authController = new AuthController();
+const categoryController = new CategoryController();
 
-router.post("/register", async (req, res) => {
+router.get("/", [verifyTokenMiddleware], async (req, res) => {
   try {
-    const result = await authController.postRegister(req);
-    return res.status(response.HTTP_OK).send(result);
+    const result = await categoryController.getAllCategory();
+    res.status(response.HTTP_OK).send(result);
   } catch (error) {
     logger.error(`message - ${error.message}, stack trace - ${error.stack}`);
     res.status(error?.status || response.HTTP_INTERNAL_SERVER_ERROR).send({
@@ -20,10 +20,10 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/", [verifyTokenMiddleware], async (req, res) => {
   try {
-    const result = await authController.postLogin(req);
-    return res.status(response.HTTP_OK).send(result);
+    const result = await categoryController.postCategory(req);
+    res.status(response.HTTP_OK).send(result);
   } catch (error) {
     logger.error(`message - ${error.message}, stack trace - ${error.stack}`);
     res.status(error?.status || response.HTTP_INTERNAL_SERVER_ERROR).send({
@@ -33,8 +33,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/test", (req, res) => {
-  console.log(baseURL);
-  res.send("yusuf");
-});
 export default router;

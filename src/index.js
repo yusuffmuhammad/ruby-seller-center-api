@@ -8,13 +8,12 @@ import config from "./config/default.js";
 import morgan from "morgan";
 import winston from "./config/winston.js";
 
-import path from "path";
-import { fileURLToPath } from "url";
-
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import storeRouter from "./routes/storeRouter.js";
 import regionRouter from "./routes/regionRouter.js";
+import productRouter from "./routes/productRouter.js";
+import categoryRouter from "./routes/categoryRouter.js";
 
 const app = express();
 const PORT = config.appPort;
@@ -38,6 +37,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/stores", storeRouter);
 app.use("/api/regions", regionRouter);
+app.use("/api/products", productRouter);
+app.use("/api/categories", categoryRouter);
 
 app.listen(PORT, () => {
   console.log(`API is listening on port ${PORT}`);

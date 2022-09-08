@@ -14,7 +14,7 @@ router.get("/provinces", [verifyTokenMiddleware], async (req, res) => {
     res.status(response.HTTP_OK).send(result);
   } catch (error) {
     logger.error(`message - ${error.message}, stack trace - ${error.stack}`);
-    res.status(error?.status || 500).send({
+    res.status(error?.status || response.HTTP_INTERNAL_SERVER_ERROR).send({
       status: false,
       data: { error: error?.message || error },
     });
@@ -30,7 +30,7 @@ router.get(
       res.status(response.HTTP_OK).send(result);
     } catch (error) {
       logger.error(`message - ${error.message}, stack trace - ${error.stack}`);
-      res.status(error?.status || 500).send({
+      res.status(error?.status || response.HTTP_INTERNAL_SERVER_ERROR).send({
         status: false,
         data: { error: error?.message || error },
       });
@@ -47,7 +47,7 @@ router.get(
       res.status(response.HTTP_OK).send(result);
     } catch (error) {
       logger.error(`message - ${error.message}, stack trace - ${error.stack}`);
-      res.status(error?.status || 500).send({
+      res.status(error?.status || response.HTTP_INTERNAL_SERVER_ERROR).send({
         status: false,
         data: { error: error?.message || error },
       });
@@ -64,7 +64,7 @@ router.get(
       res.status(response.HTTP_OK).send(result);
     } catch (error) {
       logger.error(`message - ${error.message}, stack trace - ${error.stack}`);
-      res.status(error?.status || 500).send({
+      res.status(error?.status || response.HTTP_INTERNAL_SERVER_ERROR).send({
         status: false,
         data: { error: error?.message || error },
       });

@@ -1,6 +1,7 @@
 import { StoreService } from "../services/storeService.js";
 import response from "../utils/response.js";
 import fs from "fs";
+import baseUrl from "../helpers/baseURL.js";
 
 const storeService = new StoreService();
 
@@ -58,10 +59,10 @@ class StoreController {
         fs.unlinkSync(store.image.path);
       }
 
-      console.log(req.headers.host);
-
       let body = {};
-      req.file.imageurl = `${req.headers.host}`;
+
+      // add property image url to object data image
+      req.file.imageurl = `${baseUrl}/images/stores/${req.file.filename}`;
       body.image = req.file;
       const updatedStore = await storeService.findByIdAndUpdate(storeId, body);
 
